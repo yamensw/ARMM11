@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LiveMarket — 3D Listing (Smooth)</title>
+  <meta name="description" content="Minimal marketplace demo with Vectary 3D viewer and smooth UI" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <!-- NAV -->
+  <nav id="siteNav" class="bg-white/90 backdrop-blur sticky top-0 z-50 border-b border-slate-200 transition-shadow">
+    <div class="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
+      <button data-link="home" class="brand focus-outline">
+        🏛️ <span class="sr-only">LiveMarket</span>
+      </button>
+      <div class="flex gap-2">
+        <button data-link="home" class="chip focus-outline">Home</button>
+        <button data-link="product" class="chip focus-outline">Royal Lion</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <main id="home" class="page active">
+    <header class="mx-auto max-w-6xl px-4 pt-10 pb-8 fade-up">
+      <div class="hero">
+        <div class="hero-inner">
+          <h1 class="title">Discover & View 3D Items</h1>
+          <p class="subtitle">A minimal demo marketplace with a smooth Vectary viewer.</p>
+          <div class="mt-6">
+            <button data-link="product" class="btn-primary focus-outline">
+              View “Royal Lion” in 3D
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="mx-auto max-w-6xl px-4 pb-16 fade-up">
+      <h2 class="section-title">Featured</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Card -->
+        <article class="card hover-lift">
+          <div class="h-56 w-full gradient-amber flex items-center justify-center text-7xl">👑</div>
+          <div class="p-4">
+            <div class="flex items-baseline justify-between">
+              <h3 class="font-semibold text-lg">Royal Lion</h3>
+              <div class="price">$3,200</div>
+            </div>
+            <p class="muted mt-1">Hand-carved marble lion. View the model in 3D.</p>
+            <div class="mt-4">
+              <button data-link="product" class="btn-outline w-full focus-outline">
+                Open 3D Viewer
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Extra card sample -->
+        <article class="card hover-lift hidden md:block">
+          <div class="h-56 w-full gradient-blue flex items-center justify-center text-7xl">🗿</div>
+          <div class="p-4">
+            <div class="flex items-baseline justify-between">
+              <h3 class="font-semibold text-lg">Garden Nymph</h3>
+              <div class="price">$890</div>
+            </div>
+            <p class="muted mt-1">Elegant stone figure for outdoor spaces.</p>
+            <div class="mt-4">
+              <button data-link="product" class="btn-outline w-full focus-outline">Preview</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- PRODUCT -->
+  <section id="product" class="page">
+    <div class="mx-auto max-w-6xl px-4 py-8">
+      <button data-link="home" class="link focus-outline mb-4">← Back to Home</button>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- 3D Viewer -->
+        <div class="card overflow-hidden fade-up">
+          <div class="viewer-wrap relative">
+            <div id="viewerLoader" class="viewer-loader">
+              <div class="spinner" aria-hidden="true"></div>
+              <div class="loader-text">Loading 3D Viewer…</div>
+            </div>
+            <iframe
+              id="e9937cd0-f99b-40b2-8313-058b89e11871"
+              src="https://app.vectary.com/viewer/v1/?model=e9937cd0-f99b-40b2-8313-058b89e11871&env=studio3"
+              title="Vectary 3D viewer"
+              frameborder="0"
+              width="100%"
+              height="480"
+              allow="fullscreen; xr-spatial-tracking; autoplay; clipboard-write"
+              allowfullscreen
+              webkitallowfullscreen
+              mozallowfullscreen
+              style="display:block;width:100%;max-width:100%;aspect-ratio:16/9"
+              onload="document.getElementById('viewerLoader').classList.add('hidden')">
+            </iframe>
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class="card p-6 fade-up" style="animation-delay:.08s">
+          <h1 class="text-2xl font-bold">Royal Lion</h1>
+          <div class="price mt-2">$3,200</div>
+
+          <div class="mt-4 space-y-2 text-sm text-slate-700">
+            <p class="leading-relaxed">Majestic marble lion sculpture with fine detailing. Explore in 3D to see profile, texture, and scale.</p>
+            <p><span class="font-semibold">Material:</span> Marble</p>
+            <p><span class="font-semibold">Dimensions:</span> Height 20”, Length 28”, Width 16”</p>
+            <p><span class="font-semibold">Weight:</span> 65 lbs</p>
+          </div>
+
+          <div class="mt-6 grid grid-cols-2 gap-3">
+            <button class="btn-primary focus-outline">Add to Cart</button>
+            <button class="btn-outline focus-outline">Share</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- tiny router + smooth nav + reduced motion care -->
+  <script>
+    const pages = ["home", "product"];
+    let current = "home";
+
+    function show(id) {
+      if (id === current) return;
+      const out = document.getElementById(current);
+      const into = document.getElementById(id);
+
+      out.classList.add('fade-out');
+      setTimeout(() => {
+        out.classList.remove('active','fade-out');
+        into.classList.add('active','fade-in');
+        setTimeout(() => into.classList.remove('fade-in'), 350);
+      }, 220);
+
+      current = id;
+      location.hash = id;
+      window.scrollTo({ top: 0, behavior: prefersReduced() ? 'auto' : 'smooth' });
+    }
+
+    function prefersReduced() {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-link]');
+      if (btn) {
+        e.preventDefault();
+        show(btn.getAttribute('data-link'));
+      }
+    });
+
+    // Nav shadow on scroll (subtle)
+    const nav = document.getElementById('siteNav');
+    const onScroll = () => nav.classList.toggle('shadow-lg', window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // Hash routing
+    window.addEventListener('hashchange', () => {
+      const target = location.hash.replace('#','');
+      if (pages.includes(target)) show(target);
+    });
+
+    // Initial route
+    (function init(){
+      const target = location.hash.replace('#','');
+      current = pages.includes(target) ? target : 'home';
+      document.getElementById(current).classList.add('active');
+    })();
+  </script>
+</body>
+</html>
